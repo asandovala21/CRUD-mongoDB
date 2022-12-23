@@ -1,0 +1,55 @@
+CRUD en MongoDB.
+Con JavaScript se usa más MongoDB
+CRUD son las operaciones fundamentales que se hacen al crear una aplicación. 
+https://gist.github.com/bradtraversy/f407d642bdc3b31681bc7e56d95485b6
+recomendado UUID4 o solo UUID
+https://nddapp.com/object-id-to-timestamp-converter.html
+
+Con docker
+docker exec -it mongo-docker bash
+mongosh -u root -p 123456
+
+Arquitectura en capas: Diagramar como va a ser el flujo de movimeinto de los datos, previo a que el usario pueda manipularlos.
+Capa de presentación (rutas o templates): lo que se ve en la pantalla, puede ser una interfaz gráfica, puede ser una api (interactuar solo con las rutas). Las rutas
+o templates tienen la responsabilidad de mostrarle al usuario lo que puede hacer (mostrar endpoint con los que puede interactuar, mostar los templates con los que
+puede inteactuar a su vez con otros endpoints). Luego de la petición viene:
+Controladores: las rutas interactuan con controladores, que son encapsuladores de lógica, va a reflejar que queremos que pase cuando el usuario haga una petición.
+Tiene la responsabilidad de recibir la petición y decidir lógica, e interactuar con capa de servicios. 
+Capa de servicios: controlador va a interactuar con capa de servicios. Es la encargada de hablar con la BD. 
+BD: donde se almacenan datos. 
+
+Cuando se usa filter se esta diciendo que BD internamente haga el filtro. Cuando se usa el filtro de MongoDB, esto lo hace la BD, busca los datos, los filtra y los retorna 
+filtrados a la capa de servicios. Y servicios al controlador, y el controlador a las rutas. 
+¿Qué pasaría si la BD no se encarga de hacer filtros?
+Si se usa manipulación o filtro en la capa de controlador o capa de servicios. Pasaría que la BD tendría la responsabilidad de buscar y devolver solamente. Y el filtro se haría
+en el controlador o los servicios. Y esto sobrecarga responsabilidades. Si hay mucho tráfico en la web, esto no será rápido. Los filtros que hace una BD estan optimizados, así
+que tiene que estar aca esa responsabilidad. En lugar de iterar como lo haría Javascript. Es más rápido en BD (los filtrados tienen un mecanismo interno, tienen cache y otras cosas
+y es más rápido). Lo optimo es siempre delegar operaciones de filtrado a la BD. 
+
+gt: mayor 
+gte: mayor o igual
+lt: menor 
+lte: menor o igual
+ne: no igual a 
+in: en ()
+nin: not in, no en. 
+eq: igual estricto
+exists: devuelve booleano si existe o si pertenece a lo indicado
+
+Documentación de mongodb es buena: https://www.mongodb.com/docs/manual/reference/operator/query/exists/
+
+DLL 
+update
+set: agarrar un conjunto de datos (llaves y valor) y buscar elemento cuyo id=1, y cambia cosas.
+unset: saca el campo
+inc: incremenar
+mul: multiplica
+upsert: inserción de filas.
+replace tiene mejo rendimiento
+query es el parametro de búsqueda.  
+
+En find, primero parametros de búsqueda, después filtros, después opciones, 
+y al final los métodos (para el ordenamiento, para el skip) 
+
+knex es un query builder, no llega a ser tan robusto como un ORM. Un ORM de sql sería sqlite. 
+

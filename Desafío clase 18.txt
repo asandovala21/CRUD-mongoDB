@@ -1,0 +1,65 @@
+1) Crear BD ecommerce:
+
+use ecommerce
+
+2) Crear dos colecciones: mensajes y productos:
+
+db.createCollection("mensajes")
+db.createCollection("productos")
+
+3) Agregar 10 documentos con valores distintos a las colecciones mensajes y productos. 
+
+db.mensajes.insertMany([{autor:'Andrea S', texto:'hola',fyh:'22-12-2022 23:00'},{autor:'Camila C', texto:'hola 2',fyh:'22-12-2022 22:00'},{autor:'Rafael I', texto:'¿cómo están?',fyh:'22-12-2022 23:10'},{autor:'Simón I', texto:'bien bien',fyh:'22-12-2022 23:15'},{autor:'Rafael I', texto:'¿que bueno, me alegro',fyh:'22-12-2022 23:20'},{autor:'Simón I', texto:'estupendo',fyh:'22-12-2022 23:22'},{autor:'Andrea S', texto:'que les vaya bien',fyh:'22-12-2022 23:30'},{autor:'Simón I', texto:'buenas noches',fyh:'22-12-2022 23:35'},{autor:'Rafael I', texto:'buenas noches también',fyh:'22-12-2022 23:40'},{autor:'Simón I', texto:'que descanses',fyh:'22-12-2022 23:45'}
+... ])
+
+db.mensajes.insertMany([{autor:'Andrea S', texto:'hola',fyh:'22-12-2022 23:00'},{autor:'Camila C', texto:'holecommerce> db.productos.insertMany([{title:'Pan', price:120,thumbnail:'www.p1.cl'},{title:'Ramitas', price:580,thumbnail:'www.p2.cl'},{title:'Mani', price:900,thumbnail:'www.p3.cl'},{title:'Queso', price:900,thumbnail:'www.p4.cl'},{title:'Muñeca', price:1280,thumbnail:'www.p5.cl'},{title:'Cremas', price:1700,thumbnail:'www.p6.cl'},{title:'Carne', price:2300,thumbnail:'www.p7.cl'},{title:'Pollo', price:2860,thumbnail:'www.p8.cl'},{title:'Torta helada', price:3350,thumbnail:'www.p9.cl'},{title:'Galletas', price:4320,thumbnail:'www.p10.cl'}])
+
+4) Listar los documentos de cada colección
+
+db.mensajes.find()
+ db.productos.find()
+
+
+5) Mostrar la cantidad de documentos almacenados en cada una de ella
+
+db.mensajes.estimatedDocumentCount()
+ db.productos.estimatedDocumentCount()
+
+6) Realizar CRTUD sobre la colección de productos:
+a) Agregar un producto más a la colección productos:
+
+db.productos.insertOne({title:'Gomitas',price:4990,thumbnail:'www.p11.cl'})
+
+b) Realizar consulta:
+b.i) Listar productos con precio menos a 1000.
+
+db.productos.find({"price":{$lt:1000}})
+
+b.ii) Listar productos con precio entre 1000 y 3000.
+
+db.productos.find({$and:[{"price":{$gte:1000}},{"price":{$lte:3000}}]})
+
+b.iii) Listar productos con precio mayor a 3000.
+
+db.productos.find({"price":{$gt:3000}})
+
+b.iv) Consulta que traiga sólo el nombre del tercer producto. 
+
+db.productos.find({},{"title":1}).sort({"price":1}).skip(2).limit(1)
+
+
+c) Actualización de todos los productos, agregando el campo stock.
+
+db.productos.update({"price":{$gt:0}},{$set:{"stock":100}},{"multi":true})
+
+db.productos.find()
+
+
+d) Cambiar stock a cero de los productos con precios mayores a 4000
+
+
+db.productos.update({"price":{$gt:4000}},{$set:{"stock":0}}, {"multi":true})
+
+7) Crear un usuario pepe clave 'asd456' que sólo puede leer la bd ecommerce. 
+
+db.createUser({"user":'pepe',"pwd":'asd456',"roles":[{"role":'read',"db":'ecommerce'}]})
